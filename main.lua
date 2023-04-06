@@ -1,367 +1,359 @@
-local L0_1, L1_1, L2_1, L3_1
-L0_1 = {}
-L1_1 = CreateThread
-function L2_1()
-  local L0_2, L1_2
-  L0_2 = Wait
-  L1_2 = 1500
-  L0_2(L1_2)
-  L0_2 = print
-  L1_2 = "^5[barbaroNNs Multichar] ^7Loaded successfully"
-  L0_2(L1_2)
-end
-L1_1(L2_1)
-function L1_1(A0_2, A1_2)
-  local L2_2, L3_2, L4_2, L5_2, L6_2, L7_2
-  L2_2 = QBCore
-  L2_2 = L2_2.Functions
-  L2_2 = L2_2.GetIdentifier
-  L3_2 = A0_2
-  L4_2 = "license"
-  L2_2 = L2_2(L3_2, L4_2)
-  L3_2 = {}
-  L4_2 = fetchUser
-  L5_2 = QBCore
-  L5_2 = L5_2.Functions
-  L5_2 = L5_2.GetIdentifier
-  L6_2 = A0_2
-  L7_2 = "discord"
-  L5_2 = L5_2(L6_2, L7_2)
-  function L6_2(A0_3)
-    local L1_3, L2_3, L3_3, L4_3, L5_3
-    L2_3 = A0_2
-    L1_3 = L0_1
-    L3_3 = {}
-    L4_3 = A0_3
-    L5_3 = "["
-    L3_3[1] = L4_3
-    L3_3[2] = L5_3
-    L1_3[L2_3] = L3_3
-    L1_3 = MySQL
-    L1_3 = L1_3.Async
-    L1_3 = L1_3.fetchAll
-    L2_3 = "SELECT * FROM `players` WHERE `license` = ? ORDER BY `cid` ASC"
-    L3_3 = {}
-    L4_3 = L2_2
-    L3_3[1] = L4_3
-    function L4_3(A0_4)
-      local L1_4, L2_4, L3_4, L4_4, L5_4, L6_4, L7_4, L8_4, L9_4, L10_4, L11_4, L12_4, L13_4
-      if nil ~= A0_4 then
-        L1_4 = pairs
-        L2_4 = A0_4
-        L1_4, L2_4, L3_4, L4_4 = L1_4(L2_4)
-        for L5_4, L6_4 in L1_4, L2_4, L3_4, L4_4 do
-          L7_4 = {}
-          L8_4 = json
-          L8_4 = L8_4.decode
-          L9_4 = L6_4.charinfo
-          L8_4 = L8_4(L9_4)
-          L9_4 = json
-          L9_4 = L9_4.decode
-          L10_4 = L6_4.money
-          L9_4 = L9_4(L10_4)
-          L10_4 = L8_4.firstname
-          L11_4 = " "
-          L12_4 = L8_4.lastname
-          L10_4 = L10_4 .. L11_4 .. L12_4
-          L7_4.name = L10_4
-          L10_4 = L8_4.nickname
-          L7_4.nickname = L10_4
-          L10_4 = L6_4.citizenid
-          L7_4.citizenid = L10_4
-          L10_4 = L6_4.cid
-          L7_4.cid = L10_4
-          L10_4 = L8_4.gender
-          if nil ~= L10_4 then
-            L10_4 = L8_4.gender
-            if 0 == L10_4 then
-              L10_4 = "Mand"
-              if L10_4 then
-                goto lbl_38
-              end
-            end
-          end
-          L10_4 = "Kvinde"
-          ::lbl_38::
-          L7_4.gender = L10_4
-          L10_4 = L9_4.cash
-          L7_4.cash = L10_4
-          L10_4 = L9_4.bank
-          L7_4.bank = L10_4
-          L10_4 = L8_4.birthday
-          L7_4.birth = L10_4
-          L10_4 = json
-          L10_4 = L10_4.decode
-          L11_4 = L6_4.job
-          L10_4 = L10_4(L11_4)
-          L10_4 = L10_4.label
-          L7_4.job = L10_4
-          L10_4 = L3_2
-          L10_4 = #L10_4
-          L11_4 = L10_4 + 1
-          L10_4 = L3_2
-          L10_4[L11_4] = L7_4
-          L11_4 = A0_2
-          L10_4 = L0_1
-          L10_4 = L10_4[L11_4]
-          L12_4 = A0_2
-          L11_4 = L0_1
-          L11_4 = L11_4[L12_4]
-          L11_4 = L11_4[2]
-          L12_4 = tostring
-          L13_4 = L7_4.cid
-          L12_4 = L12_4(L13_4)
-          L11_4 = L11_4 .. L12_4
-          L10_4[2] = L11_4
+QBCore = exports[CoreConfig.core]:GetCoreObject()
+
+Config = {
+    ped = vector4(302.56298, -1467.94, 46.509521, 319.43402),
+    hidden = vector4(311.63803, -1460.509, 46.509487, 132.23925),
+    cam = vector4(307.86514, -1468.126, 46.509475, 138.3394),
+    rightped = vector4(300.7308, -1464.396, 46.509517, 212.80793),
+    leftped = vector4(307.04284, -1469.9, 46.509532, 232.09597),
+}
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(0)
+	    local ped = PlayerPedId()
+        SetPedSuffersCriticalHits(ped, false)
+    end
+end)
+
+
+
+
+
+
+
+local CreatedPeds = {}
+local PlayerCharacters = {}
+local currentChar = nil
+local currentClothing = {}
+local startCam, cam, cam2 = nil, nil, nil
+
+CreateThread(function()
+	while true do
+        Wait(0)
+        if NetworkIsSessionStarted() and QBCore then
+            Wait(1500)
+            createPeds()
+			return
+		end
+	end
+end)
+
+function createPeds()
+    local ped = PlayerPedId()
+
+    SetEntityVisible(ped, false, 0)
+    SetEntityCoords(ped, Config['hidden'])
+    FreezeEntityPosition(ped, true)
+    
+    QBCore.Functions.TriggerCallback('bb-multichar:server:get', function(chars, max)
+        if #chars > 0 and chars[1] then
+            QBCore.Functions.TriggerCallback('bb-multichar:server:getSkin', function(data)
+                local model = tonumber(data.model)
+                local loaded = loadModel(model)
+                if loaded then
+                    CreatedPeds['default'] = CreatePed(3, model, Config['ped'].x, Config['ped'].y, Config['ped'].z - 1.0, Config['ped'].w, false, false)
+                    if CoreConfig.clothing_base == 'qb' then 
+                        TriggerEvent(CoreConfig.clothing_name .. ':client:loadPlayerClothing', data.skin, CreatedPeds['default'])
+                    elseif CoreConfig.clothing_base == 'raid' then
+                        exports[CoreConfig.clothing_name]:SetPedMetadata(CreatedPeds['default'], data)
+                    elseif CoreConfig.clothing_base == 'fivem-appearance' then
+                        exports[CoreConfig.clothing_name]:setPedAppearance(CreatedPeds['default'], data.skin)
+                    else
+                        -- @other clothing function here
+                        print('clothing is undefined :(')
+                    end
+                end
+                
+                currentClothing = {i = chars[1].citizenid, d = data}
+
+                Wait(150)
+                loadAnimDict("amb@world_human_leaning@male@wall@back@foot_up@idle_a")
+                TaskPlayAnim(CreatedPeds['default'], "amb@world_human_leaning@male@wall@back@foot_up@idle_a", "idle_a", 2.0, 2.0, -1, 49, 0, false, false, false)
+            end, chars[1].citizenid)
         end
-        L1_4 = A1_2
-        L2_4 = L3_2
-        L3_4 = A0_3
-        L1_4(L2_4, L3_4)
-      else
-        L1_4 = A1_2
-        L2_4 = false
-        L3_4 = A0_3
-        L1_4(L2_4, L3_4)
-      end
-      L2_4 = A0_2
-      L1_4 = L0_1
-      L1_4 = L1_4[L2_4]
-      L3_4 = A0_2
-      L2_4 = L0_1
-      L2_4 = L2_4[L3_4]
-      L2_4 = L2_4[2]
-      L3_4 = "n]"
-      L2_4 = L2_4 .. L3_4
-      L1_4[2] = L2_4
-    end
-    L1_3(L2_3, L3_3, L4_3)
-  end
-  L4_2(L5_2, L6_2)
+        SetModelAsNoLongerNeeded(model)
+        
+        -- Collisions Stuff
+        RequestCollisionAtCoord(Config['hidden'].x, Config['hidden'].y, Config['hidden'].z)
+        RequestAdditionalCollisionAtCoord(Config['hidden'].x, Config['hidden'].y, Config['hidden'].z)
+        SetEntityCoordsNoOffset(ped, Config['hidden'].x, Config['hidden'].y, Config['hidden'].z, false, false, false, true)
+        NetworkResurrectLocalPlayer(Config['hidden'].x, Config['hidden'].y, Config['hidden'].z, 247.83258056641, true, true, false)
+        SetEntityCoords(PlayerPedId(), Config['hidden'])
+        Wait(50)
+        local pped = PlayerPedId()
+        for i = 1, 250 do
+            if HasCollisionLoadedAroundEntity(pped) then break end
+            Wait(10)
+        end
+        
+        -- Loading Screen
+        ShutdownLoadingScreenNui()
+        DoScreenFadeOut(0)
+        while not IsScreenFadedOut() do
+            Wait(0)
+        end
+
+        if GetIsLoadingScreenActive() then
+            ShutdownLoadingScreen()
+            ShutdownLoadingScreenNui()
+        end
+
+        if not IsScreenFadedOut() then DoScreenFadeOut(0) end
+        while not IsScreenFadedOut() do Citizen.Wait(0) end
+
+        -- Cameras
+        startCam = CreateCam("DEFAULT_SCRIPTED_CAMERA", 1)
+        SetCamCoord(startCam, 319.57733, -1443.237, 555.54321)
+        SetCamActive(startCam, true)
+        PointCamAtCoord(startCam, 319.57733, -1443.237, 555.54321)
+        SetCamRot(startCam, -90.0, 0.0, -0.0, 2)
+        RenderScriptCams(true, true, 0, true, true)
+
+        DoScreenFadeIn(2000)
+        while not IsScreenFadedIn() do
+            Wait(1)
+        end
+
+        cam = CreateCam("DEFAULT_SCRIPTED_CAMERA", 1)
+        SetCamCoord(cam, 317.35238, -1453.057, 180.04902)
+        SetCamRot(cam, -90.0, 0.0, -220.0, 2)
+        SetCamActive(cam, true)
+        SetCamActiveWithInterp(cam, startCam, 2500, true, true)
+        cam2 = CreateCam("DEFAULT_SCRIPTED_CAMERA", 1)
+        SetCamCoord(cam2, 304.58065, -1466.345, 46.909502, 136.39781)
+        SetCamRot(cam2, 0.0, 0.0, -220.0, 2)
+        SetCamFov(cam2, 30.0)
+        SetCamActiveWithInterp(cam2, cam, 3500, true, true)
+        RenderScriptCams(true, true, 3500, true, true)
+
+        Wait(3500)
+        SetNuiFocus(true, true)
+        SendNUIMessage({ event = "open", characters = chars, max = max})
+        currentChar = 1
+        PlayerCharacters = chars
+    end)
 end
-get = L1_1
-L1_1 = QBCore
-L1_1 = L1_1.Functions
-L1_1 = L1_1.CreateCallback
-L2_1 = "bb-multichar:server:get"
-function L3_1(A0_2, A1_2)
-  local L2_2, L3_2, L4_2, L5_2
-  L2_2 = GetPlayerPed
-  L3_2 = A0_2
-  L2_2 = L2_2(L3_2)
-  L3_2 = math
-  L3_2 = L3_2.random
-  L4_2 = 1
-  L5_2 = 999
-  L3_2 = L3_2(L4_2, L5_2)
-  L2_2 = L2_2 .. L3_2
-  L3_2 = SetPlayerRoutingBucket
-  L4_2 = A0_2
-  L5_2 = L2_2
-  L3_2(L4_2, L5_2)
-  L3_2 = get
-  L4_2 = A0_2
-  L5_2 = A1_2
-  L3_2(L4_2, L5_2)
-end
-L1_1(L2_1, L3_1)
-L1_1 = RegisterServerEvent
-L2_1 = "bb-multichar:server:spawnPlayer"
-L1_1(L2_1)
-L1_1 = AddEventHandler
-L2_1 = "bb-multichar:server:spawnPlayer"
-function L3_1(A0_2)
-  local L1_2, L2_2, L3_2, L4_2, L5_2
-  L1_2 = source
-  L2_2 = QBCore
-  L2_2 = L2_2.Player
-  L2_2 = L2_2.Login
-  L3_2 = L1_2
-  L4_2 = A0_2
-  L2_2 = L2_2(L3_2, L4_2)
-  if L2_2 then
-    L2_2 = AfterSpawn
-    L3_2 = L1_2
-    L4_2 = false
-    L5_2 = A0_2
-    L2_2(L3_2, L4_2, L5_2)
-  end
-end
-L1_1(L2_1, L3_1)
-L1_1 = QBCore
-L1_1 = L1_1.Functions
-L1_1 = L1_1.CreateCallback
-L2_1 = "bb-multichar:server:createCharacter"
-function L3_1(A0_2, A1_2, A2_2)
-  local L3_2, L4_2, L5_2, L6_2, L7_2, L8_2, L9_2, L10_2, L11_2
-  L3_2 = A0_2
-  L4_2 = CoreConfig
-  L4_2 = L4_2.char_english_only
-  if L4_2 then
-    L4_2 = "[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz]"
-    L5_2 = A2_2.firstname
-    L6_2 = L5_2
-    L5_2 = L5_2.match
-    L7_2 = L4_2
-    L5_2 = L5_2(L6_2, L7_2)
-    if not L5_2 then
-      L5_2 = TriggerClientEvent
-      L6_2 = CoreConfig
-      L6_2 = L6_2.notify
-      L7_2 = L3_2
-      L8_2 = "First name can contain English letters only"
-      L9_2 = "error"
-      L5_2(L6_2, L7_2, L8_2, L9_2)
-      L5_2 = A1_2
-      L6_2 = false
-      return L5_2(L6_2)
-    end
-    L5_2 = A2_2.lastname
-    L6_2 = L5_2
-    L5_2 = L5_2.match
-    L7_2 = L4_2
-    L5_2 = L5_2(L6_2, L7_2)
-    if not L5_2 then
-      L5_2 = TriggerClientEvent
-      L6_2 = CoreConfig
-      L6_2 = L6_2.notify
-      L7_2 = L3_2
-      L8_2 = "Last name can contain English letters only"
-      L9_2 = "error"
-      L5_2(L6_2, L7_2, L8_2, L9_2)
-      L5_2 = A1_2
-      L6_2 = false
-      return L5_2(L6_2)
-    end
-  end
-  L4_2 = -1
-  L5_2 = 1
-  L6_2 = L0_1
-  L6_2 = L6_2[L3_2]
-  L6_2 = L6_2[1]
-  L7_2 = 1
-  for L8_2 = L5_2, L6_2, L7_2 do
-    L9_2 = tostring
-    L10_2 = L8_2
-    L9_2 = L9_2(L10_2)
-    L10_2 = L9_2
-    L9_2 = L9_2.match
-    L11_2 = L0_1
-    L11_2 = L11_2[L3_2]
-    L11_2 = L11_2[2]
-    L9_2 = L9_2(L10_2, L11_2)
-    if not L9_2 then
-      L4_2 = L8_2
-      break
-    end
-  end
-  if -1 == L4_2 then
-    L5_2 = TriggerClientEvent
-    L6_2 = CoreConfig
-    L6_2 = L6_2.notify
-    L7_2 = L3_2
-    L8_2 = "You cant open more characters"
-    L9_2 = "error"
-    L5_2(L6_2, L7_2, L8_2, L9_2)
-    L5_2 = A1_2
-    L6_2 = false
-    return L5_2(L6_2)
-  end
-  A2_2.cid = L4_2
-  L5_2 = QBCore
-  L5_2 = L5_2.Player
-  L5_2 = L5_2.Login
-  L6_2 = L3_2
-  L7_2 = false
-  L8_2 = {}
-  L8_2.charinfo = A2_2
-  L9_2 = A2_2.cid
-  L8_2.cid = L9_2
-  L5_2 = L5_2(L6_2, L7_2, L8_2)
-  if L5_2 then
-    L5_2 = AfterSpawn
-    L6_2 = L3_2
-    L7_2 = true
-    L8_2 = A2_2.citizenid
-    L5_2(L6_2, L7_2, L8_2)
-    L5_2 = A1_2
-    L6_2 = true
-    return L5_2(L6_2)
-  end
-  L5_2 = TriggerClientEvent
-  L6_2 = CoreConfig
-  L6_2 = L6_2.notify
-  L7_2 = L3_2
-  L8_2 = "Unknown error"
-  L9_2 = "error"
-  L5_2(L6_2, L7_2, L8_2, L9_2)
-  L5_2 = A1_2
-  L6_2 = false
-  return L5_2(L6_2)
-end
-L1_1(L2_1, L3_1)
-L1_1 = QBCore
-L1_1 = L1_1.Functions
-L1_1 = L1_1.CreateCallback
-L2_1 = "bb-multichar:server:deleteCharacter"
-function L3_1(A0_2, A1_2, A2_2)
-  local L3_2, L4_2, L5_2
-  L3_2 = QBCore
-  L3_2 = L3_2.Player
-  L3_2 = L3_2.DeleteCharacter
-  L4_2 = A0_2
-  L5_2 = A2_2
-  L3_2(L4_2, L5_2)
-  L3_2 = Wait
-  L4_2 = 1000
-  L3_2(L4_2)
-  L3_2 = get
-  L4_2 = A0_2
-  L5_2 = A1_2
-  L3_2(L4_2, L5_2)
-end
-L1_1(L2_1, L3_1)
-L1_1 = QBCore
-L1_1 = L1_1.Functions
-L1_1 = L1_1.CreateCallback
-L2_1 = "bb-multichar:server:getSkin"
-function L3_1(A0_2, A1_2, A2_2)
-  local L3_2, L4_2, L5_2, L6_2, L7_2
-  L3_2 = A0_2
-  L4_2 = CoreConfig
-  L4_2 = L4_2.clothing_base
-  if "qb" == L4_2 then
-    L4_2 = getQBClothing
-    L5_2 = L3_2
-    L6_2 = A1_2
-    L7_2 = A2_2
-    L4_2(L5_2, L6_2, L7_2)
-  else
-    L4_2 = CoreConfig
-    L4_2 = L4_2.clothing_base
-    if "fivem-appearance" == L4_2 then
-      L4_2 = getAppearanceClothing
-      L5_2 = L3_2
-      L6_2 = A1_2
-      L7_2 = A2_2
-      L4_2(L5_2, L6_2, L7_2)
+
+RegisterNUICallback('switch', function(data, cb)
+    local selectedChar = tonumber(data.char)
+    if currentChar == -1 then
+        QBCore.Functions.TriggerCallback('bb-multichar:server:getSkin', function(data)
+            local model = tonumber(data.model)
+            local loaded = loadModel(model)
+            if loaded then
+                CreatedPeds['default'] = CreatePed(3, model, Config['rightped'].x, Config['rightped'].y, Config['rightped'].z - 1.0, Config['rightped'].w, false, false)
+                if CoreConfig.clothing_base == 'qb' then 
+                    TriggerEvent(CoreConfig.clothing_name .. ':client:loadPlayerClothing', data.skin, CreatedPeds['default'])
+                elseif CoreConfig.clothing_base == 'raid' then
+                    exports[CoreConfig.clothing_name]:SetPedMetadata(CreatedPeds['default'], data)
+                elseif CoreConfig.clothing_base == 'fivem-appearance' then
+                    exports[CoreConfig.clothing_name]:setPedAppearance(CreatedPeds['default'], data.skin)
+                else
+                    -- @other clothing function here
+                    print('clothing is undefined :(')
+                end
+            end
+            currentClothing = {i = data.citizenid, d = data}
+
+            Wait(150)
+            TaskGoStraightToCoord(CreatedPeds['default'], Config['ped'].x, Config['ped'].y, Config['ped'].z - 1.0, 1.4, 8000, Config['ped'].w)
+            Wait(1500)
+            cb(true)
+            loadAnimDict("amb@world_human_leaning@male@wall@back@foot_up@idle_a")
+            TaskPlayAnim(CreatedPeds['default'], "amb@world_human_leaning@male@wall@back@foot_up@idle_a", "idle_a", 2.0, 2.0, -1, 49, 0, false, false, false)
+            currentChar = selectedChar
+        end, data.citizenid)
+    elseif selectedChar and selectedChar ~= currentChar then
+        if selectedChar > currentChar then
+            QBCore.Functions.TriggerCallback('bb-multichar:server:getSkin', function(data)
+                ClearPedTasks(CreatedPeds['default'])
+                TaskGoStraightToCoord(CreatedPeds['default'], Config['leftped'].x, Config['leftped'].y, Config['leftped'].z, 1.4, 8000, Config['leftped'].w)
+
+                local model = tonumber(data.model)
+                local loaded = loadModel(model)
+                if loaded then
+                    CreatedPeds['right'] = CreatePed(3, model, Config['rightped'].x, Config['rightped'].y, Config['rightped'].z - 1.0, Config['rightped'].w, false, false)
+                    if CoreConfig.clothing_base == 'qb' then 
+                        TriggerEvent(CoreConfig.clothing_name .. ':client:loadPlayerClothing', data.skin, CreatedPeds['right'])
+                    elseif CoreConfig.clothing_base == 'raid' then
+                        exports[CoreConfig.clothing_name]:SetPedMetadata(CreatedPeds['right'], data)
+                    elseif CoreConfig.clothing_base == 'fivem-appearance' then
+                        exports[CoreConfig.clothing_name]:setPedAppearance(CreatedPeds['right'], data.skin)
+                    else
+                        -- @other clothing function here
+                        print('clothing is undefined :(')
+                    end
+                end
+
+                currentClothing = {i = data.citizenid, d = data}
+                Wait(150)
+
+                TaskGoStraightToCoord(CreatedPeds['right'], Config['ped'].x, Config['ped'].y, Config['ped'].z - 1.0, 1.4, 8000, Config['ped'].w)
+                Wait(1500)
+                cb(true)
+                loadAnimDict("amb@world_human_leaning@male@wall@back@foot_up@idle_a")
+                TaskPlayAnim(CreatedPeds['right'], "amb@world_human_leaning@male@wall@back@foot_up@idle_a", "idle_a", 2.0, 2.0, -1, 49, 0, false, false, false)
+                DeletePed(CreatedPeds['default'])
+                CreatedPeds['default'] = CreatedPeds['right']
+                CreatedPeds['right'] = nil
+            end, data.citizenid)
+        else
+            QBCore.Functions.TriggerCallback('bb-multichar:server:getSkin', function(data)
+                ClearPedTasks(CreatedPeds['default'])
+                TaskGoStraightToCoord(CreatedPeds['default'], Config['rightped'].x, Config['rightped'].y, Config['rightped'].z, 1.4, 8000, Config['rightped'].w)
+            
+                local model = tonumber(data.model)
+                local loaded = loadModel(model)
+                if loaded then
+                    CreatedPeds['left'] = CreatePed(3, model, Config['leftped'].x, Config['leftped'].y, Config['leftped'].z - 1.0, Config['leftped'].w, false, false)
+                    if CoreConfig.clothing_base == 'qb' then 
+                        TriggerEvent(CoreConfig.clothing_name .. ':client:loadPlayerClothing', data.skin, CreatedPeds['left'])
+                    elseif CoreConfig.clothing_base == 'raid' then
+                        exports[CoreConfig.clothing_name]:SetPedMetadata(CreatedPeds['left'], data)
+                    elseif CoreConfig.clothing_base == 'fivem-appearance' then
+                        exports[CoreConfig.clothing_name]:setPedAppearance(CreatedPeds['left'], data.skin)
+                    else
+                        -- @other clothing function here
+                        print('clothing is undefined :(')
+                    end
+                end
+
+                currentClothing = {i = data.citizenid, d = data}
+                Wait(150)
+
+                TaskGoStraightToCoord(CreatedPeds['left'], Config['ped'].x, Config['ped'].y, Config['ped'].z - 1.0, 1.0, 8000, Config['ped'].w)
+                Wait(1500)
+                cb(true)
+                loadAnimDict("amb@world_human_leaning@male@wall@back@foot_up@idle_a")
+                TaskPlayAnim(CreatedPeds['left'], "amb@world_human_leaning@male@wall@back@foot_up@idle_a", "idle_a", 2.0, 2.0, -1, 49, 0, false, false, false)
+                DeletePed(CreatedPeds['default'])
+                CreatedPeds['default'] = CreatedPeds['left']
+                CreatedPeds['left'] = nil
+            end, data.citizenid)
+        end
+
+        currentChar = selectedChar
     else
-      L4_2 = CoreConfig
-      L4_2 = L4_2.clothing_base
-      if "raid" == L4_2 then
-        L4_2 = getRaidClothing
-        L5_2 = L3_2
-        L6_2 = A1_2
-        L7_2 = A2_2
-        L4_2(L5_2, L6_2, L7_2)
-      else
-        L4_2 = getOtherClothing
-        L5_2 = L3_2
-        L6_2 = A1_2
-        L7_2 = A2_2
-        L4_2(L5_2, L6_2, L7_2)
-      end
+        ClearPedTasks(CreatedPeds['default'])
+        TaskGoStraightToCoord(CreatedPeds['default'], Config['rightped'].x, Config['rightped'].y, Config['rightped'].z, 1.4, 8000, Config['rightped'].w)
+        Wait(1500)
+        
+        cb(true)
+        DeletePed(CreatedPeds['default'])
+        CreatedPeds['default'] = nil
+        currentChar = -1
     end
-  end
+end)
+
+RegisterNUICallback("create", function(data, cb)
+    QBCore.Functions.TriggerCallback('bb-multichar:server:createCharacter', function(res)
+        cb(res)
+
+        if res then
+            SetNuiFocus(false, false)
+            DoScreenFadeOut(1000)
+            Wait(1000)
+
+            local ped = PlayerPedId()
+            FreezeEntityPosition(ped, false)
+            SetEntityVisible(ped, true, true)
+            DestroyCam(cam, false)
+            DestroyCam(cam2, false)
+            DestroyCam(startCam, false)
+            RenderScriptCams(false, true, 900, true, true)
+
+            DeletePed(CreatedPeds['default'])
+            CreatedPeds['default'] = nil
+            currentChar = -1
+        end
+    end, data.char)
+end)
+
+RegisterNUICallback("select", function(data, cb)
+    Citizen.Trace(json.encode(data))
+    SetNuiFocus(false, false)
+
+    Wait(700)
+    DoScreenFadeOut(500)
+    Wait(500)
+
+    local ped = PlayerPedId()
+    FreezeEntityPosition(ped, false)
+    SetEntityVisible(ped, true, true)
+    DestroyCam(cam, false)
+    DestroyCam(cam2, false)
+    DestroyCam(startCam, false)
+    RenderScriptCams(false, true, 900, true, true)
+    DeletePed(CreatedPeds['default'])
+    CreatedPeds['default'] = nil
+    currentChar = -1
+
+    TriggerServerEvent('bb-multichar:server:spawnPlayer', data.citizenid)
+end)
+
+RegisterNUICallback("delete", function(data, cb)
+    QBCore.Functions.TriggerCallback('bb-multichar:server:deleteCharacter', function(chars, max)
+        DeletePed(CreatedPeds['default'])
+        CreatedPeds = {}
+        PlayerCharacters = {}
+        currentChar = nil
+        currentClothing = {}
+        
+        if #chars > 0 and chars[1] then
+            QBCore.Functions.TriggerCallback('bb-multichar:server:getSkin', function(data)
+                local model = tonumber(data.model)
+    
+                local model = tonumber(data.model)
+                local loaded = loadModel(model)
+                if loaded then
+                    CreatedPeds['default'] = CreatePed(3, model, Config['ped'].x, Config['ped'].y, Config['ped'].z - 1.0, Config['ped'].w, false, false)
+                    if CoreConfig.clothing_base == 'qb' then 
+                        TriggerEvent(CoreConfig.clothing_name .. ':client:loadPlayerClothing', data.skin, CreatedPeds['default'])
+                    elseif CoreConfig.clothing_base == 'raid' then
+                        exports[CoreConfig.clothing_name]:SetPedMetadata(CreatedPeds['default'], data)
+                    elseif CoreConfig.clothing_base == 'fivem-appearance' then
+                        exports[CoreConfig.clothing_name]:setPedAppearance(CreatedPeds['default'], data.skin)
+                    else
+                        -- @other clothing function here
+                        print('clothing is undefined :(')
+                    end
+                end
+
+                currentClothing = {i = chars[1].citizenid, d = data}
+    
+                Wait(150)
+                loadAnimDict("amb@world_human_leaning@male@wall@back@foot_up@idle_a")
+                TaskPlayAnim(CreatedPeds['default'], "amb@world_human_leaning@male@wall@back@foot_up@idle_a", "idle_a", 2.0, 2.0, -1, 49, 0, false, false, false)
+            end, chars[1].citizenid)
+        end
+        SetModelAsNoLongerNeeded(model)
+        
+        Wait(200)
+        SetNuiFocus(true, true)
+        cb({characters = chars, max = max})
+        currentChar = 1
+        PlayerCharacters = chars
+    end, data.citizenid)
+end)
+
+RegisterCommand('cnui', function()
+    SetNuiFocus(false, false)
+end)
+
+function loadModel(model)
+    RequestModel(model)
+    for i = 1, 2500 do 
+        if HasModelLoaded(model) then return true end
+        RequestModel(model)
+        Wait(1)
+    end
+    return false
 end
-L1_1(L2_1, L3_1)
+
+function loadAnimDict(dict)
+    while (not HasAnimDictLoaded(dict)) do
+        RequestAnimDict(dict)
+        Wait(5)
+    end
+end 
